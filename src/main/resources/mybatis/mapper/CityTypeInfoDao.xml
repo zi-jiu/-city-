@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.city_type_info.CityTypeInfoDao">
+    <resultMap type="com.zj.city.domain.CityTypeInfo" id="cityTypeInfo">
+        <result column="id" property="id" />
+        <result column="name" property="name"/>
+        <result column="sort" property="sort"/>
+        <result column="view_count" property="viewCount"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="cityTypeInfo">
+        select * from city_type_info
+    </select>
+    <select id="findAllByViewCount" resultMap="cityTypeInfo">
+        select * from city_type_info ORDER BY view_count DESC
+    </select>
+
+
+
+</mapper>

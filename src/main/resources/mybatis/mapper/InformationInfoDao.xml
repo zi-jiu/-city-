@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.information_info.InformationInfoDao">
+
+    <resultMap type="com.zj.city.domain.InformationInfo" id="informationInfo">
+        <result column="id" property="id" />
+        <result column="name" property="name"/>
+        <result column="content" property="content"/>
+        <result column="content_text" property="contentText"/>
+        <result column="cover" property="cover"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="city_type_id" property="cityTypeId"/>
+        <result column="type_id" property="typeId"/>
+    </resultMap>
+
+    <select id="findAllByCityType" resultMap="informationInfo">
+         SELECT * FROM information_info where city_type_id = #{cityTypeId} and `status` = 1
+    </select>
+
+    <update id="updateCityViewCount">
+         UPDATE city_type_info ci,information_info infor  set ci.view_count = ci.view_count + 1
+         where infor.city_type_id = ci.id and infor.city_type_id = #{cityTypeId}
+    </update>
+
+    <select id="findAllByTypeId" resultMap="informationInfo">
+         SELECT * FROM information_info where city_type_id = #{cityTypeId} and type_id = #{typeId} and `status` = 1
+    </select>
+
+    <select id="findAllById" resultMap="informationInfo">
+         SELECT * FROM information_info where id = #{id} and `status` = 1
+    </select>
+
+</mapper>

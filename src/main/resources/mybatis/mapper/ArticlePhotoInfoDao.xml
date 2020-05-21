@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.article_photo_info.ArticlePhotoInfoDao">
+    <resultMap type="com.zj.city.domain.ArticlePhotoInfo" id="articlePhotoInfo">
+        <result column="id" property="id" />
+        <result column="d_id" property="dId"/>
+        <result column="u_id" property="uId"/>
+        <result column="photo" property="photo"/>
+    </resultMap>
+
+
+    <insert id="add">
+        insert into article_photo_info(d_id,photo,u_id) VALUE(#{dId},#{photo},#{uId})
+    </insert>
+
+    <select id="findById" resultMap="articlePhotoInfo">
+        select * from article_photo_info where d_id = #{dId}
+    </select>
+
+    <select id="findByUserId" resultMap="articlePhotoInfo">
+        select * from article_photo_info where u_id = #{uId}
+    </select>
+
+
+</mapper>

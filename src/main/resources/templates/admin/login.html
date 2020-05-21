@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>login</title>
+</head>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/4.4.1-1/bootstrap-4.4.1-1.jar!/META-INF/resources/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="${pageContext.request.contextPath}/static/css/ie-10.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="${pageContext.request.contextPath}/static/css/signin.css" rel="stylesheet">
+
+
+    <script src="${pageContext.request.contextPath}/static/js/ie-emulation-modes-warning.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.8.min.js"></script>
+
+<body>
+
+<div class="container">
+    <form id="login" class="form-signin" th:action="@{admin/login_json.controller}" method="post">
+        <h2 class="form-signin-heading">登 录</h2>
+
+        <label for="name" class="sr-only">Login_name</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="login_name" required autofocus>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+
+        <button id="bottom-text" class="btn btn-lg btn-primary btn-block" type="button" data-dismiss="alert" aria-label="Close">Sign in</button>
+    </form>
+
+    <script>
+        $("#bottom-text").click(function () {
+            $.ajax({
+                url:"${pageContext.request.contextPath}/admin/login_json.controller",
+                type:"POST",
+                dataType:"json",
+                data:$("#login").serialize(),
+                success:function (result) {
+                    if(result.code=="1"){
+                        window.location.href="${pageContext.request.contextPath}/admin/index.controller"
+                    }else{
+                        alert(result.message);
+                    }
+                }
+
+            });
+        });
+    </script>
+
+</div> <!-- /container -->
+
+</body>
+</html>

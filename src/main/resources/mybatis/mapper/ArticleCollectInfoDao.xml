@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.article_collect_info.ArticleCollectInfoDao">
+
+    <resultMap id="articleCollectInfo" type="com.zj.city.domain.ArticleCollectInfo">
+        <result column="id" property="id" />
+        <result column="u_id" property="uId"/>
+        <result column="d_id" property="dId"/>
+        <result column="collect_status" property="collectStatus"/>
+        <result column="good_status" property="goodStatus"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into article_collect_info(d_id,u_id,collect_status,good_status) VALUES(#{dId},#{uId},0,0)
+    </insert>
+
+    <select id="selectCollectStatus" resultMap="articleCollectInfo">
+        select * from article_collect_info where u_id = #{uId} and d_id = #{dId}
+    </select>
+
+    <insert id="insertCollectStatus">
+        insert into
+        article_collect_info(u_id,d_id,collect_status,good_status)
+        VALUES(#{uId},#{dId},#{collectStatus},0)
+    </insert>
+
+    <update id="updateCollectStatus">
+        update article_collect_info
+        set collect_status = #{collectStatus} where u_id=#{uId} and d_id = #{dId}
+    </update>
+
+
+    <select id="selectGoodStatues" resultMap="articleCollectInfo">
+        select * from article_collect_info where u_id = #{uId} and d_id = #{dId}
+    </select>
+
+    <insert id="insertGoodStatues">
+        insert into
+        article_collect_info(u_id,d_id,good_status,collect_status)
+        VALUES(#{uId},#{dId},#{goodStatus},0)
+    </insert>
+
+    <update id="updateGoodStatues">
+        update article_collect_info
+        set good_status = #{goodStatus} where u_id=#{uId} and d_id = #{dId}
+    </update>
+
+</mapper>

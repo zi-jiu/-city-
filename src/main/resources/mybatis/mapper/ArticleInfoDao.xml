@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.article_info.ArticleInfoDao">
+    <resultMap type="com.zj.city.domain.ArticleInfo" id="articleInfo">
+        <result column="id" property="id" />
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="content_text" property="contentText"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="user_id" property="userId"/>
+        <result column="city_id" property="cityId"/>
+        <result column="type_id" property="typeId"/>
+
+        <association property="articleCollectInfo" column="id" javaType="com.zj.city.domain.ArticleCollectInfo">
+            <result column="collect_status" property="collectStatus"/>
+            <result column="good_status" property="goodStatus"/>
+        </association>
+
+        <association property="articlePhotoInfo" column="id" javaType="com.zj.city.domain.ArticlePhotoInfo">
+            <result column="photo" property="photo"/>
+        </association>
+
+        <association property="cityTypeInfo" column="typeId" javaType="com.zj.city.domain.CityTypeInfo">
+            <result column="cname" property="name"/>
+        </association>
+
+        <association property="typeInfo" column="typeId" javaType="com.zj.city.domain.TypeInfo">
+            <result column="tname" property="name"/>
+        </association>
+
+        <association property="userInfo" column="userId" javaType="com.zj.city.domain.UserInfo">
+            <result column="id" property="id" />
+            <result column="profile_photo" property="profilePhoto"/>
+            <result column="uname" property="name" />
+        </association>
+
+    </resultMap>
+
+
+    <select id="findAll" resultMap="articleInfo">
+      select ar.*,ap.photo,ui.`name` as uname,ui.profile_photo,ci.`name` as cname,ty.`name` as tname
+      from article_info as ar,article_photo_info as ap,user_info as ui,city_type_info as ci , type_info as ty
+      WHERE  ar.id = ap.d_id and ar.`status` = 1 and ui.id = ar.user_id and ci.id = ar.city_id and ty.id = ar.type_id
+      ORDER BY ar.update_time DESC
+    </select>
+
+    <select id="findAllByView" resultMap="articleInfo">
+      select ar.*,ap.photo,ui.`name` as uname,ui.profile_photo,ci.`name` as cname,ty.`name` as tname
+      from article_info as ar,article_photo_info as ap,user_info as ui,city_type_info as ci , type_info as ty
+      WHERE  ar.id = ap.d_id and ar.`status` = 1 and ui.id = ar.user_id and ci.id = ar.city_id and ty.id = ar.type_id
+	  ORDER BY ar.view_count DESC
+    </select>
+
+    <select id="findAllByTypeId" resultMap="articleInfo">
+      select ar.*,ap.photo,ui.`name` as uname,ui.profile_photo,ci.`name` as cname,ty.`name` as tname
+      from article_info as ar,article_photo_info as ap,user_info as ui,city_type_info as ci , type_info as ty
+      WHERE  ar.id = ap.d_id and ar.`status` = 1 and ui.id = ar.user_id and ci.id = ar.city_id and ty.id = ar.type_id
+	  and ar.type_id = #{typeId}
+	  ORDER BY ar.update_time DESC
+    </select>
+
+
+
+    <select id="findById" resultMap="articleInfo">
+  select ar.*,ap.photo,ui.`name` as uname,ui.profile_photo,ci.`name` as cname,ty.`name` as tname ,ac.collect_status,ac.good_status
+  from article_info as ar,article_photo_info as ap,user_info as ui,city_type_info as ci , type_info as ty ,article_collect_info as ac
+  WHERE ar.id = #{id} and ac.u_id = #{uId} and ar.id = ap.d_id
+  and ar.`status` = 1
+  and ui.id = ar.user_id
+  and ap.d_id = ar.id
+  and ac.d_id = ar.id
+  and ci.id = ar.city_id and ty.id = ar.type_id
+  </select>
+
+    <select id="findByUserId" resultMap="articleInfo">
+        select * from article_info where user_id = #{userId}
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        article_info(title,content,content_text,update_time,view_count,status,user_id)
+        VALUES(#{title},#{content},#{contentText},#{updateTime},#{viewCount},#{status},#{userId})
+    </insert>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.diary_collect_info.DiaryCollectInfoDao">
+    <resultMap type="com.zj.city.domain.DiaryCollectInfo" id="diaryCollectInfo">
+        <result column="id" property="id" />
+        <result column="u_id" property="uId"/>
+        <result column="d_id" property="dId"/>
+        <result column="collect_status" property="collectStatus"/>
+        <result column="good_status" property="goodStatus"/>
+    </resultMap>
+
+
+    <select id="selectCollectStatus" resultMap="diaryCollectInfo">
+        select * from diary_collect_info where u_id = #{uId} and d_id = #{dId}
+    </select>
+
+    <insert id="insertCollectStatus">
+        insert into
+        diary_collect_info(u_id,d_id,collect_status,good_status)
+        VALUES(#{uId},#{dId},#{collectStatus},0)
+    </insert>
+
+    <update id="updateCollectStatus">
+        update diary_collect_info
+        set collect_status = #{collectStatus} where u_id=#{uId} and d_id = #{dId}
+    </update>
+
+    <insert id="insertGoodStatus">
+        insert into
+        diary_collect_info(u_id,d_id,collect_status,good_status)
+        VALUES(#{uId},#{dId},0,#{goodStatus})
+    </insert>
+
+    <update id="updateGoodStatus">
+        update diary_collect_info
+        set good_status = #{goodStatus} where u_id=#{uId} and d_id = #{dId}
+    </update>
+
+    <insert id="add">
+        insert into diary_collect_info(d_id,u_id,collect_status,good_status) VALUES(#{dId},#{uId},0,0)
+    </insert>
+
+</mapper>

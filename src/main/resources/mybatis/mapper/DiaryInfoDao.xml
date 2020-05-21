@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.city.dao.diary_info.DiaryInfoDao">
+    <resultMap type="com.zj.city.domain.DiaryInfo" id="diaryInfo">
+        <result column="id" property="id" />
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="content_text" property="contentText"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="user_id" property="userId"/>
+        <result column="status_gf" property="statusGf"/>
+
+        <association property="diaryCollectInfo" column="id" javaType="com.zj.city.domain.DiaryCollectInfo">
+            <result column="collect_status" property="collectStatus"/>
+            <result column="good_status" property="goodStatus"/>
+        </association>
+
+        <association property="userInfo" column="userId" javaType="com.zj.city.domain.UserInfo">
+            <result column="id" property="id" />
+            <result column="profile_photo" property="profilePhoto"/>
+            <result column="name" property="name" />
+        </association>
+
+
+        <!--<result column="name" property="name"/>-->
+
+    </resultMap>
+
+    <select id="findAll" resultMap="diaryInfo">
+        select * from diary_info where status_gf = 1 and status = 1
+    </select>
+
+    <select id="findById" resultMap="diaryInfo">
+    select di.id,di.title,di.content,di.content_text,di.address,di.update_time,ui.`name`,di.view_count,
+    ci.collect_status,ci.good_status
+    FROM diary_info as di,diary_collect_info as ci,user_info as ui
+    where ui.id = #{uId} and ci.d_id = #{id} and ci.d_id = di.id and ci.u_id = ui.id
+    </select>
+
+    <select id="findByUserId" resultMap="diaryInfo">
+        select * from diary_info where user_id = #{userId}
+    </select>
+
+    <select id="findByStatusGfEx" resultMap="diaryInfo">
+        select * from diary_info where status_gf = 0 and status = 1
+    </select>
+
+
+    <insert id="add" >
+        insert into
+        diary_info(title,content,content_text,update_time,view_count,status,status_gf,user_id,address)
+        VALUES(#{title},#{content},#{contentText},#{updateTime},#{viewCount},#{status},#{statusGf},#{userId},#{address})
+    </insert>
+
+    <update id="update">
+        update diary_info
+        set title=#{title},content=#{content},content_text=#{contentText},view_count=#{viewCount},update_time=#{updateTime},status=#{status},status_gf=#{statusGf},address = #{address} where id=#{id}
+    </update>
+
+</mapper>
